@@ -10,7 +10,7 @@ import com.mygdx.deleter.DeleterProject;
 public class MainScreen extends AbstractScreen {
 
     SpriteBatch batch;
-    Texture img;
+    Image img;
     protected Stage stage;
 
     public MainScreen(DeleterProject dp) {
@@ -21,8 +21,9 @@ public class MainScreen extends AbstractScreen {
 
     protected void init() {
         batch = new SpriteBatch();
-        img = new Texture("badlogic.jpg");
-      //  stage.addActor(img);
+        stage = new Stage();
+        img = new Image( new Texture("background.png"));
+        stage.addActor(img);
     }
 
 
@@ -34,7 +35,7 @@ public class MainScreen extends AbstractScreen {
      super.render(delta);
         batch.begin();
 
-        batch.draw(img,0,0);
+        stage.draw();
 
         batch.end();
 
