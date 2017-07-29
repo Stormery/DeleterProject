@@ -2,16 +2,13 @@ package com.mygdx.deleter.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.Array;
 import com.mygdx.deleter.DeleterProject;
 
 
@@ -26,7 +23,8 @@ public class MainScreen extends AbstractScreen {
     Image imgBackground;
 
     //Tables
-   private boolean tableDebug = true;
+   private boolean tableDebug = false
+            ;
     private Table tableMain;
     private Table tableInner;
     private Table tableScrollable;
@@ -53,12 +51,12 @@ public class MainScreen extends AbstractScreen {
     private void initTables() {
         tableMain = new Table();
         tableMain.setFillParent(true);
-        tableMain.setDebug(true);
+        tableMain.setDebug(tableDebug);
         tableMain.top().left().padTop(10f);
 
 
         tableInner = new Table();
-        tableInner.setDebug(true);
+        tableInner.setDebug(tableDebug);
         tableInner.top();
         ///TOP
         tableInner.add().width(230f).height(145f).padLeft(10f);
@@ -70,32 +68,35 @@ public class MainScreen extends AbstractScreen {
         tableInner.row();
         // ScrollingTable
         tableScrollable = new Table();
-        tableScrollable.setDebug(true);
+        tableScrollable.setDebug(false);
         tableScrollable.top().left();
-//        addMessage("lalal");
-//        addMessage("lalal");
-//        addMessage("laldw2eal");
-//        addMessage("lal2323ral");
-//        addMessage("laweflal");
-//        addMessage("lafewfewlal");
-//        addMessage("lagadslal");
-//        addMessage("lalal");
-//        addMessage("lasdasdalal");
-        String[] strings = new String[10];
-        for(int i = 0; i<10; i++){
-            strings[i]= "yolo " + i;
-        }
-    List<String> list = new List(skin);
-        list.setItems(strings);
 
+        addMessage("lalal");
+        addMessage("lalal");
+        addMessage("laldw2eal");
+        addMessage("lal2323ral");
+        addMessage("laweflal");
+        addMessage("lafewfewlal");
+        addMessage("lagadslal");
+        addMessage("lalal");
+        addMessage("lasdasdalal");
+        addMessage("laweflal");
+        addMessage("lafewfewlal");
+        addMessage("lagadslal");
+        addMessage("lalal");
+        addMessage("lasdasdalal");
+        addMessage("laweflal");
+        addMessage("lafewfewlal");
+        addMessage("lagadslal");
+        addMessage("lalal");
+        addMessage("lasdasdalal");
 
-
-        ScrollPane scrollPane = new ScrollPane(list);
-        scrollPane.setOverscroll(true ,true);
-        tableScrollable.add(scrollPane).expand().left();
+        ScrollPane scrollPane = new ScrollPane(tableScrollable);
+        scrollPane.setOverscroll(false ,false);
+        //tableScrollable.add(scrollPane).expand().left();
 
         //BOT
-        tableInner.add(tableScrollable).width(510f).height(135f).colspan(2).padTop(28f);
+        tableInner.add(scrollPane).width(510f).height(135f).colspan(2).padTop(28f);
         tableInner.add().width(100f).height(55f).padTop(28f).padLeft(30f);
 
 
@@ -105,7 +106,7 @@ public class MainScreen extends AbstractScreen {
     }
 
     private void addMessage(String message) {
-        tableScrollable.add(new Label(message, skin));
+        tableScrollable.add(new Label(message, skin)).left();
         tableScrollable.row();
     }
 
