@@ -3,6 +3,7 @@ package com.mygdx.deleter.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 /**
@@ -11,9 +12,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public abstract class AbstractScreen extends Stage implements Screen {
 
+    protected Stage stage;
+    protected SpriteBatch batch;
 
     public AbstractScreen() {
-
+        batch = new SpriteBatch();
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -23,7 +28,7 @@ public abstract class AbstractScreen extends Stage implements Screen {
     }
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(this);
+
     }
     @Override
     public void resize(int width, int height) { }

@@ -1,24 +1,35 @@
 package com.mygdx.deleter.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Array;
 import com.mygdx.deleter.DeleterProject;
+
 
 
 public class MainScreen extends AbstractScreen {
 
-    SpriteBatch batch;
-    protected Stage stage;
+
+
+    TextureAtlas textureAtlas;
+    Skin skin;
 
     Image imgBackground;
 
     //Tables
    private boolean tableDebug = true;
     private Table tableMain;
-    private Table tableTop;
+    private Table tableInner;
+    private Table tableScrollable;
 
 
     public MainScreen(DeleterProject dp) {
@@ -28,11 +39,15 @@ public class MainScreen extends AbstractScreen {
 
 
     protected void init() {
-        batch = new SpriteBatch();
-        stage = new Stage();
+        initAtlasSkin();
         initBackground();
-         initTables();
+        initTables();
 
+    }
+
+    private void initAtlasSkin() {
+        textureAtlas = new TextureAtlas(Gdx.files.internal("uiskin.atlas"));
+        skin = new Skin(Gdx.files.internal("uiskin.json"),textureAtlas);
     }
 
     private void initTables() {
@@ -40,26 +55,58 @@ public class MainScreen extends AbstractScreen {
         tableMain.setFillParent(true);
         tableMain.setDebug(true);
         tableMain.top().left().padTop(10f);
-        stage.addActor(tableMain);
 
-        tableTop = new Table();
-        tableTop.setDebug(true);
-        tableTop.top();
+
+        tableInner = new Table();
+        tableInner.setDebug(true);
+        tableInner.top();
         ///TOP
-        tableTop.add().width(230f).height(145f).padLeft(10f);
-        tableTop.add().width(230f).height(145f).padLeft(45f);
-        tableTop.add().width(95f).height(145f).padLeft(65f);
-        tableTop.row();
+        tableInner.add().width(230f).height(145f).padLeft(10f);
+        tableInner.add().width(230f).height(145f).padLeft(45f);
+        tableInner.add().width(95f).height(145f).padLeft(65f);
+        tableInner.row();
         //MID
-        tableTop.add().expandX().height(140f).colspan(3).padTop(35f);
-        tableTop.row();
+        tableInner.add().expandX().height(140f).colspan(3).padTop(35f);
+        tableInner.row();
+        // ScrollingTable
+        tableScrollable = new Table();
+        tableScrollable.setDebug(true);
+        tableScrollable.top().left();
+//        addMessage("lalal");
+//        addMessage("lalal");
+//        addMessage("laldw2eal");
+//        addMessage("lal2323ral");
+//        addMessage("laweflal");
+//        addMessage("lafewfewlal");
+//        addMessage("lagadslal");
+//        addMessage("lalal");
+//        addMessage("lasdasdalal");
+        String[] strings = new String[10];
+        for(int i = 0; i<10; i++){
+            strings[i]= "yolo " + i;
+        }
+    List<String> list = new List(skin);
+        list.setItems(strings);
+
+
+
+        ScrollPane scrollPane = new ScrollPane(list);
+        scrollPane.setOverscroll(true ,true);
+        tableScrollable.add(scrollPane).expand().left();
+
         //BOT
-        tableTop.add().width(510f).height(140f).colspan(2).padTop(28f);
-        tableTop.add().width(100f).height(55f).padTop(28f).padLeft(30f);
-        
+        tableInner.add(tableScrollable).width(510f).height(135f).colspan(2).padTop(28f);
+        tableInner.add().width(100f).height(55f).padTop(28f).padLeft(30f);
 
 
-        tableMain.add(tableTop);
+
+        tableMain.add(tableInner);
+        stage.addActor(tableMain);
+    }
+
+    private void addMessage(String message) {
+        tableScrollable.add(new Label(message, skin));
+        tableScrollable.row();
     }
 
     private void initBackground() {
@@ -67,20 +114,26 @@ public class MainScreen extends AbstractScreen {
         stage.addActor(imgBackground);
     }
 
-
     @Override
     public void show() {}
 
     @Override
     public void render(float delta) {
      super.render(delta);
+
         batch.begin();
+        stage.act(); //<-------------?
 
         stage.draw();
+
 
         batch.end();
 
     }
 
-
+    @Override
+    public void dispose() {
+        super.dispose();
+        stage.dispose();
+    }
 }
