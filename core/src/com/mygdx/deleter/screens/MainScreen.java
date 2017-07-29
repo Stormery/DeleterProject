@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -23,8 +22,8 @@ public class MainScreen extends AbstractScreen {
     Image imgBackground;
 
     //Tables
-   private boolean tableDebug = false
-            ;
+   private boolean tableDebug = false;
+
     private Table tableMain;
     private Table tableInner;
     private Table tableScrollable;
@@ -33,6 +32,29 @@ public class MainScreen extends AbstractScreen {
     public MainScreen(DeleterProject dp) {
         super();
         init();
+        test();
+    }
+
+    private void test() {
+        addMessage("lalal");
+        addMessage("lalal");
+        addMessage("laldw2eal");
+        addMessage("lal2323ral");
+        addMessage("laweflal");
+        addMessage("lafewfewlal");
+        addMessage("lagadslal");
+        addMessage("lalal");
+        addMessage("lasdasdalal");
+        addMessage("laweflal");
+        addMessage("lafewfewlal");
+        addMessage("lagadslal");
+        addMessage("lalal");
+        addMessage("lasdasdalal");
+        addMessage("laweflal");
+        addMessage("lafewfewlal");
+        addMessage("lagadslal");
+        addMessage("lalal");
+        addMessage("lasdasdalal");
     }
 
 
@@ -42,10 +64,9 @@ public class MainScreen extends AbstractScreen {
         initTables();
 
     }
-
-    private void initAtlasSkin() {
-        textureAtlas = new TextureAtlas(Gdx.files.internal("uiskin.atlas"));
-        skin = new Skin(Gdx.files.internal("uiskin.json"),textureAtlas);
+    private void addMessage(String message) {
+        tableScrollable.add(new Label(message, skin)).left();
+        tableScrollable.row();
     }
 
     private void initTables() {
@@ -71,29 +92,8 @@ public class MainScreen extends AbstractScreen {
         tableScrollable.setDebug(false);
         tableScrollable.top().left();
 
-        addMessage("lalal");
-        addMessage("lalal");
-        addMessage("laldw2eal");
-        addMessage("lal2323ral");
-        addMessage("laweflal");
-        addMessage("lafewfewlal");
-        addMessage("lagadslal");
-        addMessage("lalal");
-        addMessage("lasdasdalal");
-        addMessage("laweflal");
-        addMessage("lafewfewlal");
-        addMessage("lagadslal");
-        addMessage("lalal");
-        addMessage("lasdasdalal");
-        addMessage("laweflal");
-        addMessage("lafewfewlal");
-        addMessage("lagadslal");
-        addMessage("lalal");
-        addMessage("lasdasdalal");
-
         ScrollPane scrollPane = new ScrollPane(tableScrollable);
         scrollPane.setOverscroll(false ,false);
-        //tableScrollable.add(scrollPane).expand().left();
 
         //BOT
         tableInner.add(scrollPane).width(510f).height(135f).colspan(2).padTop(28f);
@@ -105,11 +105,11 @@ public class MainScreen extends AbstractScreen {
         stage.addActor(tableMain);
     }
 
-    private void addMessage(String message) {
-        tableScrollable.add(new Label(message, skin)).left();
-        tableScrollable.row();
-    }
 
+    private void initAtlasSkin() {
+        textureAtlas = new TextureAtlas(Gdx.files.internal("uiskin.atlas"));
+        skin = new Skin(Gdx.files.internal("uiskin.json"),textureAtlas);
+    }
     private void initBackground() {
         imgBackground = new Image( new Texture("background.png"));
         stage.addActor(imgBackground);
@@ -123,7 +123,7 @@ public class MainScreen extends AbstractScreen {
      super.render(delta);
 
         batch.begin();
-        stage.act(); //<-------------?
+        stage.act();
 
         stage.draw();
 
