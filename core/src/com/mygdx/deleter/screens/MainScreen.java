@@ -36,25 +36,9 @@ public class MainScreen extends AbstractScreen {
     }
 
     private void test() {
-        addMessage("lalal");
-        addMessage("lalal");
-        addMessage("laldw2eal");
-        addMessage("lal2323ral");
-        addMessage("laweflal");
-        addMessage("lafewfewlal");
-        addMessage("lagadslal");
-        addMessage("lalal");
-        addMessage("lasdasdalal");
-        addMessage("laweflal");
-        addMessage("lafewfewlal");
-        addMessage("lagadslal");
-        addMessage("lalal");
-        addMessage("lasdasdalal");
-        addMessage("laweflal");
-        addMessage("lafewfewlal");
-        addMessage("lagadslal");
-        addMessage("lalal");
-        addMessage("lasdasdalal");
+        for(int i = 1; i<20;i++){
+            addMessage("DCM000"+i);
+        }
     }
 
 
