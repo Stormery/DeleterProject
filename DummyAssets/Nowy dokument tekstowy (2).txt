@@ -1,0 +1,9 @@
+std::getline(nazwaPliku, line); // pobieram nazwe pliku kazda po koleji
+ 
+ FileIOJava.CheckIfFileExist(nazwaPliku); // jesli plik istnieje przechodzimy dalej
+	
+	FileIOJava.DeleteFile(innaNazwa);  // jesli to nie plik wymagany kasujemy go
+		
+		Repeat do smierci
+	
+	

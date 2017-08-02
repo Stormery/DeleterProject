@@ -327,10 +327,10 @@ public class FileDrop
                             if( listener != null )
                                 listener.filesDropped( files );
 
-                            // Mark that drop is completed.
-                            evt.getDropTargetContext().dropComplete(true);
-                            System.err.println("FileDrop: drop complete.");
-                            //log( out, "FileDrop: drop complete ." );
+                                // Mark th450at drop is completed.
+                                evt.getDropTargetContext().dropComplete(true);
+                           // System.err.println("FileDrop: drop complete.");
+                            log( out, "FileDrop: drop complete ." );
                         }   // end if: file list
                         else // this section will check for a reader flavor.
                         {

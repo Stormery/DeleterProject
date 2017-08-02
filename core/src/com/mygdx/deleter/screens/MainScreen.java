@@ -11,6 +11,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.mygdx.deleter.DeleterProject;
 import com.mygdx.deleter.ui.FileDrop;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class MainScreen extends AbstractScreen {
 
@@ -26,10 +34,13 @@ public class MainScreen extends AbstractScreen {
     private Table tableScrollable;
     private ScrollPane scrollPane;
 
+    public boolean filesLoaded;
+    public boolean textLoaded;
+
     public MainScreen(DeleterProject dp) {
         super();
         init();
-        test();
+       // test();
     }
 
     private void test() {
@@ -59,7 +70,12 @@ public class MainScreen extends AbstractScreen {
             public void filesDropped(java.io.File[] files) {
                 for (int i = 0; i < files.length; i++) {
                     try {
-                        addMessage(files[i].getCanonicalPath());
+                        text.append( files[i].getCanonicalPath() + "\n"  );
+
+                      if(files[i].toString().contains(".txt")){
+                          addMessage(".TXT file found!");
+                          readTxtFile(files[i].getCanonicalPath());
+                      }
                     }   // end try
                     catch (java.io.IOException e) {
                     }
@@ -67,9 +83,30 @@ public class MainScreen extends AbstractScreen {
             }   // end filesDropped
         }); // end FileDrop.Listener
 
-        frame.setBounds(0, 0, 300, 400);
-        // frame.setDefaultCloseOperation( frame.EXIT_ON_CLOSE );
+        frame.setBounds(0, 0, 450, 300);
+        frame.setDefaultCloseOperation( frame.EXIT_ON_CLOSE );
         frame.setVisible(true);
+    }
+
+    private void readTxtFile(String yourFile) {
+        String[] arr= null;
+        List<String> itemsSchool = new ArrayList<String>();
+        try {
+            FileInputStream fstream_school = new FileInputStream(yourFile);
+            DataInputStream data_input = new DataInputStream(fstream_school);
+            BufferedReader buffer = new BufferedReader(new InputStreamReader(data_input));
+            String str_line;
+            while ((str_line = buffer.readLine()) != null)
+            {
+                str_line = str_line.trim();
+                if ((str_line.length()!=0))
+                {
+                    addMessage("IMG: " + str_line);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void addMessage(String message) {
