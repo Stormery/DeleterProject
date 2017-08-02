@@ -36,7 +36,7 @@ public class MainScreen extends AbstractScreen {
 
     public boolean filesLoaded;
     public boolean textLoaded;
-
+    List<String> fotoList;
     public MainScreen(DeleterProject dp) {
         super();
         init();
@@ -75,6 +75,8 @@ public class MainScreen extends AbstractScreen {
                       if(files[i].toString().contains(".txt")){
                           addMessage(".TXT file found!");
                           readTxtFile(files[i].getCanonicalPath());
+                          textLoaded = true;
+
                       }
                     }   // end try
                     catch (java.io.IOException e) {
@@ -89,8 +91,7 @@ public class MainScreen extends AbstractScreen {
     }
 
     private void readTxtFile(String yourFile) {
-        String[] arr= null;
-        List<String> itemsSchool = new ArrayList<String>();
+        fotoList = new ArrayList<String>();
         try {
             FileInputStream fstream_school = new FileInputStream(yourFile);
             DataInputStream data_input = new DataInputStream(fstream_school);
@@ -102,7 +103,12 @@ public class MainScreen extends AbstractScreen {
                 if ((str_line.length()!=0))
                 {
                     addMessage("IMG: " + str_line);
+                    fotoList.add(str_line);
+
                 }
+            }
+            for(String listaZdjec : fotoList){
+                System.out.print(listaZdjec + " ");
             }
         } catch (IOException e) {
             e.printStackTrace();
