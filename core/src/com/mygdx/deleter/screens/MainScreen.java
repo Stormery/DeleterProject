@@ -9,25 +9,22 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.mygdx.deleter.DeleterProject;
-
+import com.mygdx.deleter.ui.FileDrop;
 
 
 public class MainScreen extends AbstractScreen {
 
-
-
-    TextureAtlas textureAtlas;
     Skin skin;
 
     Image imgBackground;
 
     //Tables
-   private boolean tableDebug = false;
+    private boolean tableDebug = true;
 
     private Table tableMain;
     private Table tableInner;
     private Table tableScrollable;
-
+    private ScrollPane scrollPane;
 
     public MainScreen(DeleterProject dp) {
         super();
@@ -36,21 +33,51 @@ public class MainScreen extends AbstractScreen {
     }
 
     private void test() {
-        for(int i = 1; i<20;i++){
-            addMessage("DCM000"+i);
+        for (int i = 1; i < 20; i++) {
+            addMessage("DCM000" + i);
         }
     }
-
 
     protected void init() {
         initAtlasSkin();
         initBackground();
         initTables();
-
+        initDragnDrop(); // potrzebuje przycisk wlaczajacy to
     }
+
+    private void initDragnDrop() {
+        //TODO Tlo zeby bylo wiadomo ze tam dropic itemy
+
+        javax.swing.JFrame frame = new javax.swing.JFrame("FileDrop");
+        //javax.swing.border.TitledBorder dragBorder = new javax.swing.border.TitledBorder( "Drop 'em" );
+        final javax.swing.JTextArea text = new javax.swing.JTextArea();
+        frame.getContentPane().add(
+                new javax.swing.JScrollPane(text),
+                java.awt.BorderLayout.CENTER);
+
+        new FileDrop(System.out, text, /*dragBorder,*/ new FileDrop.Listener() {
+            public void filesDropped(java.io.File[] files) {
+                for (int i = 0; i < files.length; i++) {
+                    try {
+                        addMessage(files[i].getCanonicalPath());
+                    }   // end try
+                    catch (java.io.IOException e) {
+                    }
+                }   // end for: through each dropped file
+            }   // end filesDropped
+        }); // end FileDrop.Listener
+
+        frame.setBounds(0, 0, 300, 400);
+        // frame.setDefaultCloseOperation( frame.EXIT_ON_CLOSE );
+        frame.setVisible(true);
+    }
+
     private void addMessage(String message) {
         tableScrollable.add(new Label(message, skin)).left();
         tableScrollable.row();
+        scrollPane.layout();
+        scrollPane.setScrollPercentY(100);
+        scrollPane.updateVisualScroll();
     }
 
     private void initTables() {
@@ -64,6 +91,7 @@ public class MainScreen extends AbstractScreen {
         tableInner.setDebug(tableDebug);
         tableInner.top();
         ///TOP
+
         tableInner.add().width(230f).height(145f).padLeft(10f);
         tableInner.add().width(230f).height(145f).padLeft(45f);
         tableInner.add().width(95f).height(145f).padLeft(65f);
@@ -76,14 +104,12 @@ public class MainScreen extends AbstractScreen {
         tableScrollable.setDebug(false);
         tableScrollable.top().left();
 
-        ScrollPane scrollPane = new ScrollPane(tableScrollable);
-        scrollPane.setOverscroll(false ,false);
+        scrollPane = new ScrollPane(tableScrollable);
+        scrollPane.setOverscroll(false, false);
 
         //BOT
         tableInner.add(scrollPane).width(510f).height(135f).colspan(2).padTop(28f);
         tableInner.add().width(100f).height(55f).padTop(28f).padLeft(30f);
-
-
 
         tableMain.add(tableInner);
         stage.addActor(tableMain);
@@ -91,26 +117,27 @@ public class MainScreen extends AbstractScreen {
 
 
     private void initAtlasSkin() {
-        textureAtlas = new TextureAtlas(Gdx.files.internal("uiskin.atlas"));
-        skin = new Skin(Gdx.files.internal("uiskin.json"),textureAtlas);
+        skin = new Skin(Gdx.files.internal("uiskin.json"),
+                new TextureAtlas(Gdx.files.internal("uiskin.atlas")));
     }
+
     private void initBackground() {
-        imgBackground = new Image( new Texture("background.png"));
+        imgBackground = new Image(new Texture("background.png"));
         stage.addActor(imgBackground);
     }
 
     @Override
-    public void show() {}
+    public void show() {
+    }
 
     @Override
     public void render(float delta) {
-     super.render(delta);
+        super.render(delta);
 
         batch.begin();
         stage.act();
 
         stage.draw();
-
 
         batch.end();
 

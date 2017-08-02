@@ -1,5 +1,7 @@
 package com.mygdx.deleter.ui;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+
 import java.awt.datatransfer.DataFlavor;
 import java.io.BufferedReader;
 import java.io.File;
@@ -327,7 +329,8 @@ public class FileDrop
 
                             // Mark that drop is completed.
                             evt.getDropTargetContext().dropComplete(true);
-                            log( out, "FileDrop: drop complete." );
+                            System.err.println("FileDrop: drop complete.");
+                            //log( out, "FileDrop: drop complete ." );
                         }   // end if: file list
                         else // this section will check for a reader flavor.
                         {
@@ -351,6 +354,7 @@ public class FileDrop
                                     
                                     // Mark that drop is completed.
                                     evt.getDropTargetContext().dropComplete(true);
+
                                     log(out, "FileDrop: drop complete.");
                                     handled = true;
                                     break;
@@ -417,7 +421,7 @@ public class FileDrop
         }   // end else: does not support DnD
     }   // end constructor
 
-    
+
     private static boolean supportsDnD()
     {   // Static Boolean
         if( supportsDnD == null )
