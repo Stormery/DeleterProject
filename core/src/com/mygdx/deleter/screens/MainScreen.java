@@ -19,7 +19,7 @@ public class MainScreen extends AbstractScreen {
     Image imgBackground;
 
     //Tables
-    private boolean tableDebug = true;
+    private boolean tableDebug = false;
 
     private Table tableMain;
     private Table tableInner;
@@ -77,6 +77,7 @@ public class MainScreen extends AbstractScreen {
         tableScrollable.row();
         scrollPane.layout();
         scrollPane.setScrollPercentY(100);
+        scrollPane.setScrollPercentX(0);
         scrollPane.updateVisualScroll();
     }
 
@@ -87,14 +88,14 @@ public class MainScreen extends AbstractScreen {
         tableMain.top().left().padTop(10f);
 
 
-        tableInner = new Table();
+        tableInner = new Table(skin);
         tableInner.setDebug(tableDebug);
         tableInner.top();
         ///TOP
 
         tableInner.add().width(230f).height(145f).padLeft(10f);
         tableInner.add().width(230f).height(145f).padLeft(45f);
-        tableInner.add().width(95f).height(145f).padLeft(65f);
+        tableInner.add(new Image(new Texture("buttons/horizontalRectangleButton.png"))).width(95f).height(145f).padLeft(65f);
         tableInner.row();
         //MID
         tableInner.add().expandX().height(140f).colspan(3).padTop(35f);
@@ -108,8 +109,8 @@ public class MainScreen extends AbstractScreen {
         scrollPane.setOverscroll(false, false);
 
         //BOT
-        tableInner.add(scrollPane).width(510f).height(135f).colspan(2).padTop(28f);
-        tableInner.add().width(100f).height(55f).padTop(28f).padLeft(30f);
+        tableInner.add(scrollPane).width(505f).height(135f).colspan(2).padTop(28f);
+        tableInner.add(new Image(new Texture("buttons/smallButton.png"))).width(100f).height(55f).padTop(28f).padLeft(30f);
 
         tableMain.add(tableInner);
         stage.addActor(tableMain);
