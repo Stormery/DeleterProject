@@ -14,6 +14,7 @@ import com.mygdx.deleter.ui.FileDrop;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -36,7 +37,9 @@ public class MainScreen extends AbstractScreen {
 
     public boolean filesLoaded;
     public boolean textLoaded;
-    List<String> fotoList;
+    List<String> fotoListFromTXT;
+    List<String> inputFilesList;
+
     public MainScreen(DeleterProject dp) {
         super();
         init();
@@ -76,13 +79,20 @@ public class MainScreen extends AbstractScreen {
                           addMessage(".TXT file found!");
                           readTxtFile(files[i].getCanonicalPath());
                           textLoaded = true;
-
                       }
+                        inputFilesList = new ArrayList<String>();
+                        inputFilesList.add(files[i].getName());
+
+
+
+
                     }   // end try
                     catch (java.io.IOException e) {
                     }
                 }   // end for: through each dropped file
+                makeTXTFile(inputFilesList);
             }   // end filesDropped
+
         }); // end FileDrop.Listener
 
         frame.setBounds(0, 0, 450, 300);
@@ -90,8 +100,25 @@ public class MainScreen extends AbstractScreen {
         frame.setVisible(true);
     }
 
+    private void makeTXTFile(List<String> name) {
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter("output.txt");
+            for(String str: name) {
+                writer.write(str);
+            }
+            addMessage("output.txt file made");
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+
     private void readTxtFile(String yourFile) {
-        fotoList = new ArrayList<String>();
+        fotoListFromTXT = new ArrayList<String>();
         try {
             FileInputStream fstream_school = new FileInputStream(yourFile);
             DataInputStream data_input = new DataInputStream(fstream_school);
@@ -103,16 +130,17 @@ public class MainScreen extends AbstractScreen {
                 if ((str_line.length()!=0))
                 {
                     addMessage("IMG: " + str_line);
-                    fotoList.add(str_line);
-
+                    fotoListFromTXT.add(str_line);
                 }
             }
-            for(String listaZdjec : fotoList){
+            for(String listaZdjec : fotoListFromTXT){
                 System.out.print(listaZdjec + " ");
             }
+            buffer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+       
     }
 
     private void addMessage(String message) {
