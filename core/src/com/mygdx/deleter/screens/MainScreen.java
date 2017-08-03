@@ -181,7 +181,7 @@ public class MainScreen extends AbstractScreen {
 
         //BOT
         tableInner.add(scrollPane).width(505f).height(135f).colspan(2).padTop(28f);
-        tableInner.add(new Image(new Texture("buttons/smallButton.png"))).width(100f).height(55f).padTop(28f).padLeft(30f);
+        tableInner.add(new Image(new Texture("buttons/smallButton.png"))).width(100f).height(55f).padTop(28f).padLeft(30f); //
 
         tableMain.add(tableInner);
         stage.addActor(tableMain);
@@ -194,7 +194,7 @@ public class MainScreen extends AbstractScreen {
     }
 
     private void initBackground() {
-        imgBackground = new Image(new Texture("background.png"));
+        imgBackground = new Image(new Texture("Background.png"));
         stage.addActor(imgBackground);
     }
 
