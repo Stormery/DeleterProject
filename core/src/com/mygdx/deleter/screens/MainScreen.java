@@ -1,16 +1,5 @@
 package com.mygdx.deleter.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.mygdx.deleter.DeleterProject;
-import com.mygdx.deleter.ui.FileDrop;
-
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
@@ -20,10 +9,22 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3WindowAdapter;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.mygdx.deleter.DeleterProject;
+
 
 public class MainScreen extends AbstractScreen {
 
-    Skin skin;
+    static Skin skin;
 
     Image imgBackground;
 
@@ -32,13 +33,13 @@ public class MainScreen extends AbstractScreen {
 
     private Table tableMain;
     private Table tableInner;
-    private Table tableScrollable;
-    private ScrollPane scrollPane;
+    private static Table tableScrollable;
+    private static ScrollPane scrollPane;
 
     public boolean filesLoaded;
-    public boolean textLoaded;
-    List<String> fotoListFromTXT;
-    List<String> inputFilesList;
+    public static boolean textLoaded;
+   private static List<String> fotoListFromTXT;
+    private static List<String> inputFilesList;
 
     public MainScreen(DeleterProject dp) {
         super();
@@ -53,59 +54,43 @@ public class MainScreen extends AbstractScreen {
     }
 
     protected void init() {
+    	inputFilesList = new ArrayList<String>();
         initAtlasSkin();
         initBackground();
         initTables();
-        initDragnDrop(); // potrzebuje przycisk wlaczajacy to
+      //  initDragnDrop(); // potrzebuje przycisk wlaczajacy to
+        
     }
+    public static void initDragNDrop(Lwjgl3ApplicationConfiguration config) {
 
-    private void initDragnDrop() {
-        //TODO Tlo zeby bylo wiadomo ze tam dropic itemy
+    	config.setWindowListener(new Lwjgl3WindowAdapter(){
+    	@Override
+    	public void filesDropped(String[] files) {
+    		for(String file : files) {	
+    			Gdx.app.log("FileDropped: ", file);
+    			
+    		//If found TXT file with list
+    			if(file.toString().contains(".txt")){
+    			 addMessage(".TXT file found!");
+    			 readTxtFile(file);
+    			 textLoaded = true;
+    			}
+    		//Add each drop to arrayList
+    			inputFilesList.add(file);
+    		}
+    		//TODO
+    		makeTXTFile(inputFilesList);
+    	}
+    	});
+	}
 
-        javax.swing.JFrame frame = new javax.swing.JFrame("FileDrop");
-        //javax.swing.border.TitledBorder dragBorder = new javax.swing.border.TitledBorder( "Drop 'em" );
-        final javax.swing.JTextArea text = new javax.swing.JTextArea();
-        frame.getContentPane().add(
-                new javax.swing.JScrollPane(text),
-                java.awt.BorderLayout.CENTER);
-
-        new FileDrop(System.out, text, /*dragBorder,*/ new FileDrop.Listener() {
-            public void filesDropped(java.io.File[] files) {
-                for (int i = 0; i < files.length; i++) {
-                    try {
-                        text.append( files[i].getCanonicalPath() + "\n"  );
-
-                      if(files[i].toString().contains(".txt")){
-                          addMessage(".TXT file found!");
-                          readTxtFile(files[i].getCanonicalPath());
-                          textLoaded = true;
-                      }
-                        inputFilesList = new ArrayList<String>();
-                        inputFilesList.add(files[i].getName());
-
-
-
-
-                    }   // end try
-                    catch (java.io.IOException e) {
-                    }
-                }   // end for: through each dropped file
-                makeTXTFile(inputFilesList);
-            }   // end filesDropped
-
-        }); // end FileDrop.Listener
-
-        frame.setBounds(0, 0, 450, 300);
-        frame.setDefaultCloseOperation( frame.EXIT_ON_CLOSE );
-        frame.setVisible(true);
-    }
-
-    private void makeTXTFile(List<String> name) {
+    private static void makeTXTFile(List<String> name) {
         FileWriter writer = null;
         try {
             writer = new FileWriter("output.txt");
             for(String str: name) {
                 writer.write(str);
+                writer.write("\r\n");
             }
             addMessage("output.txt file made");
             writer.close();
@@ -115,9 +100,7 @@ public class MainScreen extends AbstractScreen {
 
     }
 
-
-
-    private void readTxtFile(String yourFile) {
+    private static void readTxtFile(String yourFile) {
         fotoListFromTXT = new ArrayList<String>();
         try {
             FileInputStream fstream_school = new FileInputStream(yourFile);
@@ -134,7 +117,7 @@ public class MainScreen extends AbstractScreen {
                 }
             }
             for(String listaZdjec : fotoListFromTXT){
-                System.out.print(listaZdjec + " ");
+            	Gdx.app.log("from TXT: ",listaZdjec);
             }
             buffer.close();
         } catch (IOException e) {
@@ -143,7 +126,7 @@ public class MainScreen extends AbstractScreen {
        
     }
 
-    private void addMessage(String message) {
+    private static void addMessage(String message) {
         tableScrollable.add(new Label(message, skin)).left();
         tableScrollable.row();
         scrollPane.layout();
