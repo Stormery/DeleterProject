@@ -20,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.mygdx.deleter.DeleterProject;
+import com.mygdx.deleter.ui.TxtFileHandler;
 
 public class MainScreen extends AbstractScreen {
 
@@ -32,14 +33,19 @@ public class MainScreen extends AbstractScreen {
 
 	private Table tableMain;
 	private Table tableInner;
-	private static Table tableScrollable;
-	private static ScrollPane scrollPane;
+	private Table tableMid;
+	private static Table tableLeftScrollable;
+	private static Table tableBottomScrollable;
+	
+	
+	private static ScrollPane scrollPaneLeft;
+	private static ScrollPane scrollPaneBottom;
 
 	public boolean filesLoaded;
 	public static boolean textLoaded;
-	private static List<String> fotoListFromTXT;
+	
 	private static List<String> inputFilesList;
-
+	static int lastIndex;
 	public MainScreen(DeleterProject dp) {
 		super();
 		init();
@@ -48,7 +54,7 @@ public class MainScreen extends AbstractScreen {
 
 	private void test() {
 		for (int i = 1; i < 20; i++) {
-			addMessage("DCM000" + i);
+			addMessageLeftPannel("DCM000" + i);
 		}
 	}
 
@@ -62,111 +68,90 @@ public class MainScreen extends AbstractScreen {
 	}
 
 	public static void initDragNDrop(Lwjgl3ApplicationConfiguration config) {
-
+		
 		config.setWindowListener(new Lwjgl3WindowAdapter() {
 			@Override
 			public void filesDropped(String[] files) {
 				for (String file : files) {
 					Gdx.app.log("FileDropped: ", file);
-
+					lastIndex = file.lastIndexOf("\\")+1;
+					addMessageLeftPannel(file.substring(lastIndex));
 					// If found TXT file with list
 					if (file.toString().contains(".txt")) {
-						addMessage(".TXT file found!");
-						readTxtFile(file);
+						addMessageBottomPannel(".TXT file found!");
+						TxtFileHandler.readTxtFile(file);
 						textLoaded = true;
 					}
 					// Add each drop to arrayList
 					inputFilesList.add(file);
 				}
 				// TODO przerzucic do przycisku
-				makeTXTFile(inputFilesList);
+				TxtFileHandler.makeTXTFile(inputFilesList);
 			}
 		});
 	}
 
-	private static void makeTXTFile(List<String> name) {
-		FileWriter writer = null;
-		try {
-			writer = new FileWriter("PhotoList.txt");
-			for (String str : name) {
-				writer.write(str);
-				writer.write("\r\n");
-			}
-			addMessage("PhotoList.txt file made");
-			writer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
+	public static void addMessageLeftPannel(String message) {
+		tableLeftScrollable.add(new Label(message, skin)).left();
+		tableLeftScrollable.row();
+		scrollPaneLeft.layout();
+		scrollPaneLeft.setScrollPercentY(100);
+		scrollPaneLeft.setScrollPercentX(0);
+		scrollPaneLeft.updateVisualScroll(); 
+	}
+	public static void addMessageBottomPannel(String message) {	
+		tableBottomScrollable.add(new Label(message, skin)).left();
+		tableBottomScrollable.row();
+		scrollPaneBottom.layout();
+		scrollPaneBottom.setScrollPercentY(100);
+		scrollPaneBottom.setScrollPercentX(0);
+		scrollPaneBottom.updateVisualScroll(); 
 	}
 
-	private static void readTxtFile(String yourFile) {
-		fotoListFromTXT = new ArrayList<String>();
-		try {
-			FileInputStream fstream_school = new FileInputStream(yourFile);
-			DataInputStream data_input = new DataInputStream(fstream_school);
-			BufferedReader buffer = new BufferedReader(new InputStreamReader(data_input));
-			String str_line;
-			while ((str_line = buffer.readLine()) != null) {
-				str_line = str_line.trim();
-				if ((str_line.length() != 0)) {
-					addMessage("IMG: " + str_line);
-					fotoListFromTXT.add(str_line);
-				}
-			}
-			for (String listaZdjec : fotoListFromTXT) {
-				Gdx.app.log("from TXT: ", listaZdjec);
-			}
-			buffer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	private static void addMessage(String message) {
-		skin.getFont("default-font").getData().setScale(0.8f);
-		skin.getFont("default-font").setColor(0, 0, 0, 1);
-		tableScrollable.add(new Label(message, skin)).left();
-		tableScrollable.row();
-		scrollPane.layout();
-		scrollPane.setScrollPercentY(100);
-		scrollPane.setScrollPercentX(0);
-		scrollPane.updateVisualScroll(); 
-		
-	}
 
 	private void initTables() {
 		tableMain = new Table();
 		tableMain.setFillParent(true);
 		tableMain.setDebug(tableDebug);
-		tableMain.top().left().padTop(10f);
+		tableMain.top().left();
 
 		tableInner = new Table(skin);
 		tableInner.setDebug(tableDebug);
 		tableInner.top();
-		/// TOP
-
-		tableInner.add().width(230f).height(145f).padLeft(10f);
-		tableInner.add().width(230f).height(145f).padLeft(45f);
-		tableInner.add(new Image(new Texture("buttons/horizontalRectangleButton.png"))).width(95f).height(145f)
-				.padLeft(65f);
-		tableInner.row();
-		// MID
-		tableInner.add().expandX().height(140f).colspan(3).padTop(35f);
-		tableInner.row();
+		
+		tableMid = new Table(skin);
+		tableMid.setDebug(tableDebug);
+		tableMid.top().left();
 		// ScrollingTable
-		tableScrollable = new Table();
-		tableScrollable.setDebug(false);
-		tableScrollable.top().left();
+				tableLeftScrollable = new Table();
+				tableLeftScrollable.setDebug(false);
+				tableLeftScrollable.top().left();
+				
+				tableBottomScrollable = new Table();
+				tableBottomScrollable.setDebug(false);
+				tableBottomScrollable.top().left();
 
-		scrollPane = new ScrollPane(tableScrollable);
-		scrollPane.setOverscroll(false, false);
+				scrollPaneLeft = new ScrollPane(tableLeftScrollable);
+				scrollPaneLeft.setOverscroll(false, false);
+				
+				scrollPaneBottom = new ScrollPane(tableBottomScrollable);
+				scrollPaneBottom.setOverscroll(false, false);
+				/////////////
+				
+		//Left Collumn
+		tableInner.add(scrollPaneLeft).width(153f).height(485f).padLeft(6f).padTop(10f);
+		//Mid Collumn
+		tableInner.add(tableMid).width(315f).padLeft(10f).left().top();
+		tableMid.add("1").height(170f).expandX().padBottom(10f);
+		tableMid.row();
+		tableMid.add("2").height(145f).expandX().padTop(10f);
+		tableMid.row();
+		tableMid.add(scrollPaneBottom).height(135f).width(315f).padBottom(5f).padTop(25f);
+		
+		//Right Collumn
+		tableInner.add().width(200f);
+		
 
-		// BOT
-		tableInner.add(scrollPane).width(505f).height(135f).colspan(2).padTop(28f);
-		tableInner.add(new Image(new Texture("buttons/smallButton.png"))).width(100f).height(55f).padTop(28f)
-				.padLeft(30f); //
 
 		tableMain.add(tableInner);
 		stage.addActor(tableMain);
@@ -174,6 +159,7 @@ public class MainScreen extends AbstractScreen {
 
 	private void initAtlasSkin() {
 		skin = new Skin(Gdx.files.internal("uiskin.json"), new TextureAtlas(Gdx.files.internal("uiskin.atlas")));
+		skin.getFont("default-font").getData().setScale(0.8f);
 	}
 
 	private void initBackground() {
