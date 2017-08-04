@@ -13,14 +13,16 @@ import com.badlogic.gdx.Gdx;
 import com.mygdx.deleter.screens.MainScreen;
 
 public class TxtFileHandler {
-	private static List<String> fotoListFromTXT;
 	
+	private static String photoOnListName;
 	public static void makeTXTFile(List<String> name) {
 		FileWriter writer = null;
 		try {
 			writer = new FileWriter("PhotoList.txt");
 			for (String str : name) {
-				writer.write(str);
+				photoOnListName = str.substring(str.lastIndexOf("\\")+1,str.lastIndexOf("."));
+				photoOnListName = photoOnListName.substring(photoOnListName.length()-4);
+				writer.write(photoOnListName);
 				writer.write("\r\n");
 			}
 			MainScreen.addMessageBottomPannel("PhotoList.txt file made");
@@ -32,7 +34,7 @@ public class TxtFileHandler {
 	}
 	
 	public static void readTxtFile(String yourFile) {
-		fotoListFromTXT = new ArrayList<String>();
+		MainScreen.fotoListFromTXT = new ArrayList<String>();
 		try {
 			FileInputStream fstream_school = new FileInputStream(yourFile);
 			DataInputStream data_input = new DataInputStream(fstream_school);
@@ -42,11 +44,11 @@ public class TxtFileHandler {
 				str_line = str_line.trim();
 				if ((str_line.length() != 0)) {
 					
-					MainScreen.addMessageLeftPannel(str_line);
-					fotoListFromTXT.add(str_line);
+					MainScreen.addMessageBottomPannel(str_line);
+					MainScreen.	fotoListFromTXT.add(str_line);
 				}
 			}
-			for (String listaZdjec : fotoListFromTXT) {
+			for (String listaZdjec : MainScreen.fotoListFromTXT) {
 				Gdx.app.log("from TXT: ", listaZdjec);
 			}
 			buffer.close();

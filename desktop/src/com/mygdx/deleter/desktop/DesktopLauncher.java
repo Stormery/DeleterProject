@@ -18,3 +18,4 @@ public class DesktopLauncher {
 
 	
 }
+//full path from last "\" to "."  and from that -4 to get onliv

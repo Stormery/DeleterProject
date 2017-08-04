@@ -1,11 +1,5 @@
 package com.mygdx.deleter.screens;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,11 +35,12 @@ public class MainScreen extends AbstractScreen {
 	private static ScrollPane scrollPaneLeft;
 	private static ScrollPane scrollPaneBottom;
 
-	public boolean filesLoaded;
+	public static boolean filesLoaded;
+	private static String fileType;
 	public static boolean textLoaded;
 	
 	private static List<String> inputFilesList;
-	static int lastIndex;
+	public static List<String> fotoListFromTXT;
 	public MainScreen(DeleterProject dp) {
 		super();
 		init();
@@ -68,23 +63,27 @@ public class MainScreen extends AbstractScreen {
 	}
 
 	public static void initDragNDrop(Lwjgl3ApplicationConfiguration config) {
-		
+		 
 		config.setWindowListener(new Lwjgl3WindowAdapter() {
 			@Override
 			public void filesDropped(String[] files) {
 				for (String file : files) {
 					Gdx.app.log("FileDropped: ", file);
-					lastIndex = file.lastIndexOf("\\")+1;
-					addMessageLeftPannel(file.substring(lastIndex));
+					//Shows only name of file, not full path
+					addMessageLeftPannel(file.substring(file.lastIndexOf("\\")+1));
 					// If found TXT file with list
 					if (file.toString().contains(".txt")) {
-						addMessageBottomPannel(".TXT file found!");
+						addMessageBottomPannel("Txt file loaded");
 						TxtFileHandler.readTxtFile(file);
 						textLoaded = true;
+					}else {
+						fileType = file.substring(file.lastIndexOf(".")+1);
+						filesLoaded = true;
 					}
 					// Add each drop to arrayList
 					inputFilesList.add(file);
 				}
+				addMessageBottomPannel("File type: ." + fileType);
 				// TODO przerzucic do przycisku
 				TxtFileHandler.makeTXTFile(inputFilesList);
 			}
