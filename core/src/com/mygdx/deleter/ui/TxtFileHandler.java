@@ -34,7 +34,7 @@ public class TxtFileHandler {
 	}
 	
 	public static void readTxtFile(String yourFile) {
-		MainScreen.fotoListFromTXT = new ArrayList<String>();
+		
 		try {
 			FileInputStream fstream_school = new FileInputStream(yourFile);
 			DataInputStream data_input = new DataInputStream(fstream_school);

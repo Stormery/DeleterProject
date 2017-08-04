@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.mygdx.deleter.DeleterProject;
+import com.mygdx.deleter.ui.ButtonHandler;
+import com.mygdx.deleter.ui.IClickCallback;
 import com.mygdx.deleter.ui.TxtFileHandler;
 
 public class MainScreen extends AbstractScreen {
@@ -28,6 +30,7 @@ public class MainScreen extends AbstractScreen {
 	private Table tableMain;
 	private Table tableInner;
 	private Table tableMid;
+	private Table tableRight;
 	private static Table tableLeftScrollable;
 	private static Table tableBottomScrollable;
 	
@@ -41,6 +44,9 @@ public class MainScreen extends AbstractScreen {
 	
 	private static List<String> inputFilesList;
 	public static List<String> fotoListFromTXT;
+	ButtonHandler startButton;
+	ButtonHandler makeTxtButton;
+	
 	public MainScreen(DeleterProject dp) {
 		super();
 		init();
@@ -55,11 +61,34 @@ public class MainScreen extends AbstractScreen {
 
 	protected void init() {
 		inputFilesList = new ArrayList<String>();
+		fotoListFromTXT = new ArrayList<String>();
 		initAtlasSkin();
 		initBackground();
+		initButtons();
 		initTables();
 		// initDragnDrop(); // potrzebuje przycisk wlaczajacy to
 
+	}
+
+	private void initButtons() {
+
+		 startButton = new ButtonHandler("buttons/smallButtonStart.png", new IClickCallback() {
+			
+			@Override
+			public void onClick() {
+				System.err.println("Deleting process");
+			}
+		});
+		 
+		 makeTxtButton = new ButtonHandler("buttons/smallButtonMakeTxt.png", new IClickCallback() {
+				
+				@Override
+				public void onClick() {
+					System.err.println("Making TXT");
+					TxtFileHandler.makeTXTFile(inputFilesList);
+				}
+			});
+		 
 	}
 
 	public static void initDragNDrop(Lwjgl3ApplicationConfiguration config) {
@@ -85,7 +114,7 @@ public class MainScreen extends AbstractScreen {
 				}
 				addMessageBottomPannel("File type: ." + fileType);
 				// TODO przerzucic do przycisku
-				TxtFileHandler.makeTXTFile(inputFilesList);
+				//
 			}
 		});
 	}
@@ -121,6 +150,10 @@ public class MainScreen extends AbstractScreen {
 		tableMid = new Table(skin);
 		tableMid.setDebug(tableDebug);
 		tableMid.top().left();
+		
+		tableRight = new Table(skin);
+		tableRight.setDebug(tableDebug);
+		tableRight.top().left();
 		// ScrollingTable
 				tableLeftScrollable = new Table();
 				tableLeftScrollable.setDebug(false);
@@ -148,7 +181,15 @@ public class MainScreen extends AbstractScreen {
 		tableMid.add(scrollPaneBottom).height(135f).width(315f).padBottom(5f).padTop(25f);
 		
 		//Right Collumn
-		tableInner.add().width(200f);
+		tableInner.add(tableRight).width(200f);
+		tableRight.add("1").height(170f).expandX().padBottom(10f);
+		tableRight.row();
+		tableRight.add("2").height(145f).expandX().padTop(10f);
+		tableRight.row();
+		tableRight.add(makeTxtButton).height(56f).expandX().padTop(25f);
+		tableRight.row();
+		tableRight.add(startButton).height(56f).width(96f).padBottom(20f).padTop(20f);
+		
 		
 
 
