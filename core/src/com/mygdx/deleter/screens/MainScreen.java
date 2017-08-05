@@ -42,6 +42,7 @@ public class MainScreen extends AbstractScreen {
 	public static boolean filesLoaded;
 	private static String fileType;
 	public static boolean textLoaded;
+	private static boolean itsPhoto = false;
 	
 	private static List<String> inputFilesList;
 	public static List<String> fotoListFromTXT;
@@ -79,6 +80,7 @@ public class MainScreen extends AbstractScreen {
 		@Override
 		public void onClick() {
 			System.err.println("click start");			
+			deleteFiles();
 		}
 	});
 	
@@ -91,13 +93,49 @@ public class MainScreen extends AbstractScreen {
 			}else{
 				addMessageBottomPannel("~NO POSITIONS TO MAKE A LIST! \n~FIRST UPLOAD FILES");
 			}
-			
 		}
 	});
 		 	 
 	}
+	private void deleteFiles() {
+		String photoShort;
+		boolean delete;
+		List<String> deleteList = new ArrayList<String>();
+		addMessageBottomPannel("DELETE FILES PROCES");
+		
+		//for(String photo : inputFilesList){
+		for(String photo : inputFilesList){
+			photoShort = photo.substring(photo.lastIndexOf("\\")+1,photo.lastIndexOf("."));
+			photoShort = photoShort.substring(photoShort.length()-4);
+			delete = true;
+			
+			for(String text : fotoListFromTXT){
+						//System.err.println(photoShort + " vs " + text);
+				if((photo.contains(".txt"))||(photoShort.equals(text)) ){
+					System.out.println(photoShort+ " zostawiam");
+					delete = false;
+				}					
+			}
+			if(delete){
+				//System.out.println("nie ma zdjecia usuwam " + inputFilesList.get(i));
+				deleteList.add(photo);	
+			}
+			
+		}
+		doYouWantToDelete(deleteList);
+	}
+	
+	private void doYouWantToDelete(List<String> deleteList) {
+		//TODO popup jakis czy chce usunac tyle i tyle plikow
+		for(String deletePhoto : deleteList){
+			System.out.println("Usuwam: " + deletePhoto);
+			inputFilesList.remove(deletePhoto);
+		}
+		
+	}
 
 	public static void initDragNDrop(Lwjgl3ApplicationConfiguration config) {
+		 
 		 
 		config.setWindowListener(new Lwjgl3WindowAdapter() {
 			@Override
@@ -111,14 +149,19 @@ public class MainScreen extends AbstractScreen {
 						addMessageBottomPannel("Txt file loaded");
 						TxtFileHandler.readTxtFile(file);
 						textLoaded = true;
+						itsPhoto = false;
 					}else {
 						fileType = file.substring(file.lastIndexOf(".")+1);
 						filesLoaded = true;
+						itsPhoto = true;
 					}
 					// Add each drop to arrayList
 					inputFilesList.add(file);
 				}
-				addMessageBottomPannel("Files Loaded \nFile type detected: ." + fileType);
+				if(itsPhoto){
+					addMessageBottomPannel("Files Loaded \nFile type detected: ." + fileType);
+					itsPhoto = false;
+				}
 				
 			}
 		});
