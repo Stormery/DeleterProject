@@ -1,5 +1,6 @@
 package com.mygdx.deleter.screens;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,8 +85,12 @@ public class MainScreen extends AbstractScreen {
 		
 		@Override
 		public void onClick() {
-			System.err.println("click start");			
+			System.err.println("click start");	
+			if(filesLoaded){
 			deleteFiles();
+			}else{
+				addMessageBottomPannel("~NO FILES FOUND");
+			}
 		}
 	});
 	
@@ -145,7 +150,7 @@ public class MainScreen extends AbstractScreen {
 		for(String deletePhoto : deleteList){
 			System.out.println("Usuwam: " + deletePhoto);
 			inputFilesList.remove(deletePhoto);
-			Gdx.files.external(deletePhoto).delete();
+			 new File(deletePhoto).delete();
 		}
 		
 	}
