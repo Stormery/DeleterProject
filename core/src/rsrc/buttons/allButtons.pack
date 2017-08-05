@@ -1,0 +1,47 @@
+
+allButtons.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+smallButtonMakeTxt
+  rotate: false
+  xy: 1, 1
+  size: 96, 56
+  orig: 96, 56
+  offset: 0, 0
+  index: -1
+smallButtonMakeTxtDown
+  rotate: false
+  xy: 99, 1
+  size: 96, 56
+  orig: 96, 56
+  offset: 0, 0
+  index: -1
+smallButtonReset
+  rotate: false
+  xy: 197, 1
+  size: 96, 56
+  orig: 96, 56
+  offset: 0, 0
+  index: -1
+smallButtonResetDown
+  rotate: false
+  xy: 295, 1
+  size: 96, 56
+  orig: 96, 56
+  offset: 0, 0
+  index: -1
+smallButtonStartDown
+  rotate: false
+  xy: 393, 1
+  size: 96, 56
+  orig: 96, 56
+  offset: 0, 0
+  index: -1
+smallButtonStartUp
+  rotate: false
+  xy: 491, 1
+  size: 96, 56
+  orig: 96, 56
+  offset: 0, 0
+  index: -1

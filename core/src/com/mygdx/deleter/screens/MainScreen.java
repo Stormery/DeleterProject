@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.mygdx.deleter.DeleterProject;
-import com.mygdx.deleter.ui.ButtonHandler;
+import com.mygdx.deleter.ui.ButtonStart;
 import com.mygdx.deleter.ui.IClickCallback;
 import com.mygdx.deleter.ui.TxtFileHandler;
 
@@ -44,8 +44,9 @@ public class MainScreen extends AbstractScreen {
 	
 	private static List<String> inputFilesList;
 	public static List<String> fotoListFromTXT;
-	ButtonHandler startButton;
-	ButtonHandler makeTxtButton;
+	ButtonStart startButton;
+	ButtonStart makeTxtButton;
+	
 	
 	public MainScreen(DeleterProject dp) {
 		super();
@@ -72,22 +73,15 @@ public class MainScreen extends AbstractScreen {
 
 	private void initButtons() {
 
-		 startButton = new ButtonHandler("buttons/smallButtonStart.png", new IClickCallback() {
-			
-			@Override
-			public void onClick() {
-				System.err.println("Deleting process");
-			}
-		});
+	 startButton = new ButtonStart(new IClickCallback() {
+		
+		@Override
+		public void onClick() {
+			System.err.println("click start");			
+		}
+	});
 		 
-		 makeTxtButton = new ButtonHandler("buttons/smallButtonMakeTxt.png", new IClickCallback() {
-				
-				@Override
-				public void onClick() {
-					System.err.println("Making TXT");
-					TxtFileHandler.makeTXTFile(inputFilesList);
-				}
-			});
+	
 		 
 	}
 
@@ -186,7 +180,7 @@ public class MainScreen extends AbstractScreen {
 		tableRight.row();
 		tableRight.add("2").height(145f).expandX().padTop(10f);
 		tableRight.row();
-		tableRight.add(makeTxtButton).height(56f).expandX().padTop(25f);
+		tableRight.add().height(56f).expandX().padTop(25f);
 		tableRight.row();
 		tableRight.add(startButton).height(56f).width(96f).padBottom(20f).padTop(20f);
 		
