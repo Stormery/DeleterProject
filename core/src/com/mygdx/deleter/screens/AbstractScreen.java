@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public abstract class AbstractScreen extends Stage implements Screen {
 
-    protected Stage stage;
+    public static Stage stage;
     protected SpriteBatch batch;
 
     public AbstractScreen() {

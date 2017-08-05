@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.mygdx.deleter.screens.MainScreen;
+import com.mygdx.deleter.screens.TableContainer;
 
 public class TxtFileHandler {
 	
@@ -24,7 +25,7 @@ public class TxtFileHandler {
 				writer.write(photoOnListName);
 				writer.write("\r\n");
 			}
-			MainScreen.addMessageBottomPannel("PhotoList.txt file made");
+			TableContainer.addMessageBottomPannel("PhotoList.txt file made");
 			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -43,7 +44,7 @@ public class TxtFileHandler {
 				str_line = str_line.trim();
 				if ((str_line.length() != 0)) {
 					
-					MainScreen.addMessageBottomPannel(str_line);
+					TableContainer.addMessageBottomPannel(str_line);
 					MainScreen.	fotoListFromTXT.add(str_line);
 				}
 			}
