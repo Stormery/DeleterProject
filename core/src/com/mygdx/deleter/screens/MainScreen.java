@@ -45,8 +45,8 @@ public class MainScreen extends AbstractScreen {
 	
 	private static List<String> inputFilesList;
 	public static List<String> fotoListFromTXT;
-	ButtonStart startButton;
-	ButtonTxtMake buttonTxtStart;
+	private ButtonStart startButton;
+	private ButtonTxtMake buttonTxtStart;
 	
 	
 	public MainScreen(DeleterProject dp) {
@@ -64,11 +64,11 @@ public class MainScreen extends AbstractScreen {
 	protected void init() {
 		inputFilesList = new ArrayList<String>();
 		fotoListFromTXT = new ArrayList<String>();
+		
 		initAtlasSkin();
 		initBackground();
 		initButtons();
 		initTables();
-		// initDragnDrop(); // potrzebuje przycisk wlaczajacy to
 
 	}
 
@@ -86,7 +86,12 @@ public class MainScreen extends AbstractScreen {
 		
 		@Override
 		public void onClick() {
-			TxtFileHandler.makeTXTFile(inputFilesList);
+			if(filesLoaded){
+				TxtFileHandler.makeTXTFile(inputFilesList);
+			}else{
+				addMessageBottomPannel("~NO POSITIONS TO MAKE A LIST! \n~FIRST UPLOAD FILES");
+			}
+			
 		}
 	});
 		 	 
@@ -113,7 +118,7 @@ public class MainScreen extends AbstractScreen {
 					// Add each drop to arrayList
 					inputFilesList.add(file);
 				}
-				addMessageBottomPannel("File type: ." + fileType);
+				addMessageBottomPannel("Files Loaded \nFile type detected: ." + fileType);
 				
 			}
 		});

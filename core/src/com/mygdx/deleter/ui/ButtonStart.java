@@ -22,18 +22,8 @@ private void init(final IClickCallback callback) {
 			return super.touchDown(event, x, y, pointer, button);
 		}
 	});
-	
 	}
-	//	public ButtonHandler(String imageName, final IClickCallback callback) {
-//		super(new Texture (imageName));
-//		this.addListener(new ClickListener(){
-//			@Override
-//			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-//				callback.onClick();
-//				return super.touchDown(event, x, y, pointer, button);
-//			}
-//		});
-//	}
+
 	private static ButtonStyle prepareStartButtonStyle(){
 		startButtonAtlas = new TextureAtlas("buttons/allButtons.pack");
 		Skin skin  = new Skin(startButtonAtlas);
