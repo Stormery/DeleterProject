@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.mygdx.deleter.DeleterProject;
 import com.mygdx.deleter.ui.ButtonStart;
+import com.mygdx.deleter.ui.ButtonTxtMake;
 import com.mygdx.deleter.ui.IClickCallback;
 import com.mygdx.deleter.ui.TxtFileHandler;
 
@@ -45,7 +46,7 @@ public class MainScreen extends AbstractScreen {
 	private static List<String> inputFilesList;
 	public static List<String> fotoListFromTXT;
 	ButtonStart startButton;
-	ButtonStart makeTxtButton;
+	ButtonTxtMake buttonTxtStart;
 	
 	
 	public MainScreen(DeleterProject dp) {
@@ -80,9 +81,15 @@ public class MainScreen extends AbstractScreen {
 			System.err.println("click start");			
 		}
 	});
-		 
 	
-		 
+	 buttonTxtStart = new ButtonTxtMake(new IClickCallback() {
+		
+		@Override
+		public void onClick() {
+			TxtFileHandler.makeTXTFile(inputFilesList);
+		}
+	});
+		 	 
 	}
 
 	public static void initDragNDrop(Lwjgl3ApplicationConfiguration config) {
@@ -107,8 +114,7 @@ public class MainScreen extends AbstractScreen {
 					inputFilesList.add(file);
 				}
 				addMessageBottomPannel("File type: ." + fileType);
-				// TODO przerzucic do przycisku
-				//
+				
 			}
 		});
 	}
@@ -180,7 +186,7 @@ public class MainScreen extends AbstractScreen {
 		tableRight.row();
 		tableRight.add("2").height(145f).expandX().padTop(10f);
 		tableRight.row();
-		tableRight.add().height(56f).expandX().padTop(25f);
+		tableRight.add(buttonTxtStart).height(56f).expandX().padTop(25f);
 		tableRight.row();
 		tableRight.add(startButton).height(56f).width(96f).padBottom(20f).padTop(20f);
 		
