@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3WindowAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
@@ -46,6 +48,9 @@ public class MainScreen extends AbstractScreen {
 	
 	private static List<String> inputFilesList;
 	public static List<String> fotoListFromTXT;
+	private List<String> deleteList;
+	private int amountOfDelete=0;
+	
 	private ButtonStart startButton;
 	private ButtonTxtMake buttonTxtStart;
 	
@@ -100,7 +105,7 @@ public class MainScreen extends AbstractScreen {
 	private void deleteFiles() {
 		String photoShort;
 		boolean delete;
-		List<String> deleteList = new ArrayList<String>();
+		deleteList = new ArrayList<String>();
 		addMessageBottomPannel("DELETE FILES PROCES");
 		
 		//for(String photo : inputFilesList){
@@ -117,19 +122,30 @@ public class MainScreen extends AbstractScreen {
 				}					
 			}
 			if(delete){
-				//System.out.println("nie ma zdjecia usuwam " + inputFilesList.get(i));
 				deleteList.add(photo);	
+				amountOfDelete++;
 			}
 			
 		}
-		doYouWantToDelete(deleteList);
+		//
+		Dialog dialog = new Dialog("Warning", skin, "dialog") {
+		    public void result(Object obj) {
+		        System.out.println("result "+obj);
+		        doYouWantToDelete(deleteList);
+		    }
+		};
+		dialog.text("Are you sure you want to delete " + amountOfDelete + " photos?");
+		dialog.button("Yes", true); //sends "true" as the result
+		dialog.button("No", false);  //sends "false" as the result
+		dialog.key(Keys.ENTER, true); //sends "true" when the ENTER key is pressed
+		dialog.show(stage);
 	}
 	
 	private void doYouWantToDelete(List<String> deleteList) {
-		//TODO popup jakis czy chce usunac tyle i tyle plikow
 		for(String deletePhoto : deleteList){
 			System.out.println("Usuwam: " + deletePhoto);
 			inputFilesList.remove(deletePhoto);
+			Gdx.files.external(deletePhoto).delete();
 		}
 		
 	}
@@ -219,7 +235,7 @@ public class MainScreen extends AbstractScreen {
 				/////////////
 				
 		//Left Collumn
-		tableInner.add(scrollPaneLeft).width(153f).height(485f).padLeft(6f).padTop(10f);
+		tableInner.add(scrollPaneLeft).width(153f).height(470f).padLeft(6f).padTop(5f);
 		//Mid Collumn
 		tableInner.add(tableMid).width(315f).padLeft(10f).left().top();
 		tableMid.add("1").height(170f).expandX().padBottom(10f);
