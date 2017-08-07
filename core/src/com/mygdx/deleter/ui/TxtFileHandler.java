@@ -9,19 +9,20 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
+import com.mygdx.deleter.TableContainer;
 import com.mygdx.deleter.screens.MainScreen;
-import com.mygdx.deleter.screens.TableContainer;
 
 public class TxtFileHandler {
 	
 	private static String photoOnListName;
+	public static int photoNameLenght = 4;
 	public static void makeTXTFile(List<String> name) {
 		FileWriter writer = null;
 		try {
 			writer = new FileWriter("PhotoList.txt");
 			for (String str : name) {
 				photoOnListName = str.substring(str.lastIndexOf("\\")+1,str.lastIndexOf("."));
-				photoOnListName = photoOnListName.substring(photoOnListName.length()-4);
+				photoOnListName = photoOnListName.substring(photoOnListName.length()-photoNameLenght);
 				writer.write(photoOnListName);
 				writer.write("\r\n");
 			}
@@ -43,7 +44,7 @@ public class TxtFileHandler {
 			while ((str_line = buffer.readLine()) != null) {
 				str_line = str_line.trim();
 				if ((str_line.length() != 0)) {
-					
+					photoNameLenght  = str_line.length();
 					TableContainer.addMessageBottomPannel(str_line);
 					MainScreen.	fotoListFromTXT.add(str_line);
 				}

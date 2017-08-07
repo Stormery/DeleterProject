@@ -6,8 +6,9 @@ import com.mygdx.deleter.DeleterProject;
 import com.mygdx.deleter.screens.MainScreen;
 
 public class DesktopLauncher {
+	static Lwjgl3ApplicationConfiguration config;
 	public static void main (String[] arg) {
-		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+		 config = new Lwjgl3ApplicationConfiguration();
 
 		config.setWindowedMode(DeleterProject.WIDHT, DeleterProject.HEIGHT);
 		config.setResizable(false);
