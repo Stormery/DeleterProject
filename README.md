@@ -1,0 +1,7 @@
+# DeleterProject
+Program for my brother photographer. It's deleting positions from imported list.
+
+Basic GUI, all written in LibGdx framework. In future maybe I'll expand it for more functionality.
+![alt text](https://github.com/Stormery/DeleterProject/blob/master/core/src/rsrc/PhotoDeleter02x.png)
+![alt text](https://github.com/Stormery/DeleterProject/blob/master/core/src/rsrc/PhotoDeleter03x.png)
+![alt text](https://github.com/Stormery/DeleterProject/blob/master/core/src/rsrc/PhotoDeleter04x.png)
